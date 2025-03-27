@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetProfileQuery } from "@/redux/Api/userAPi";
 import { useAddFavoriteMutation } from "@/redux/Api/webmanageApi";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +9,7 @@ import { toast } from "react-toastify";
 
 const CardShop = ({ item }) => {
   const [addFavorite] = useAddFavoriteMutation();
-  console.log(item);
+  const { data: profile } = useGetProfileQuery();
 
   const handleFavorite = async (record) => {
     console.log(record);
@@ -36,12 +37,14 @@ const CardShop = ({ item }) => {
             alt=""
           />
         </Link>
-        <div
-          onClick={() => handleFavorite(item._id)}
-          className="absolute cursor-pointer top-0 right-0  flexitems-center p-1 mr-1 mt-1 rounded-full bg-white text-xl"
-        >
-          <FiHeart />
-        </div>
+        {profile && (
+          <div
+            onClick={() => handleFavorite(item._id)}
+            className="absolute cursor-pointer top-0 right-0  flexitems-center p-1 mr-1 mt-1 rounded-full bg-white text-xl"
+          >
+            <FiHeart />
+          </div>
+        )}
       </div>
       <h1 className=" pt-2">{item?.name}</h1>
       <p className="text-sm">
